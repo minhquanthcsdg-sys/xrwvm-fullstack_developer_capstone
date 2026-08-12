@@ -1,0 +1,29 @@
+*   Trying 127.0.0.1:8000...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Connected to localhost (127.0.0.1) port 8000 (#0)
+> POST /api/logout/ HTTP/1.1
+> Host: localhost:8000
+> User-Agent: curl/7.81.0
+> Accept: */*
+> Cookie: csrftoken=AinNuJkhGBZal06kVkl3XlJGmPLjQTCC; sessionid=ca0jb180idhekejse4rlwn219ltwib3r
+> Content-Type: application/json
+> 
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Date: Wed, 12 Aug 2026 14:23:13 GMT
+< Server: WSGIServer/0.2 CPython/3.11.15
+< Content-Type: application/json
+< X-Frame-Options: DENY
+< Content-Length: 73
+< Vary: Cookie
+< X-Content-Type-Options: nosniff
+< Referrer-Policy: same-origin
+< Cross-Origin-Opener-Policy: same-origin
+* Replaced cookie sessionid="""" for domain localhost, path /, expire 1
+< Set-Cookie:  sessionid=""; expires=Thu, 01 Jan 1970 00:00:00 GMT; Max-Age=0; Path=/; SameSite=Lax
+< 
+{ [73 bytes data]
+100    73  100    73    0     0   7418      0 --:--:-- --:--:-- --:--:--  8111
+* Connection #0 to host localhost left intact
+{"status": "success", "message": "User testuser logged out successfully"}

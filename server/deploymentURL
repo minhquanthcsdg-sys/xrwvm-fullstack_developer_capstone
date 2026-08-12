@@ -1,0 +1,26 @@
+===================================
+Django Application Deployment URL
+===================================
+
+📱 Local Development URL:
+http://localhost:8000
+
+🔗 Application URL:
+http://localhost:8000/
+
+📄 Pages:
+- Home: http://localhost:8000/
+- About: http://localhost:8000/about/
+- Contact: http://localhost:8000/contact/
+
+📊 API Endpoints:
+- Dealer Reviews: http://localhost:8000/api/dealer/1/reviews/
+- All Dealers: http://localhost:8000/api/dealers/
+- Dealer by ID: http://localhost:8000/api/dealer/1/
+- Dealers by State: http://localhost:8000/api/dealers/state/KS/
+- All Car Makes: http://localhost:8000/api/carmakes/
+- Sentiment Analysis: http://localhost:8000/api/analyze/?review=Fantastic%20services
+
+===================================
+🚀 Application is running successfully
+===================================

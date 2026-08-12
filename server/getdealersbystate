@@ -1,0 +1,26 @@
+Note: Unnecessary use of -X or --request, GET is already inferred.
+*   Trying 127.0.0.1:8000...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Connected to localhost (127.0.0.1) port 8000 (#0)
+> GET /api/dealers/state/KS/ HTTP/1.1
+> Host: localhost:8000
+> User-Agent: curl/7.81.0
+> Accept: */*
+> Content-Type: application/json
+> 
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Date: Wed, 12 Aug 2026 13:58:08 GMT
+< Server: WSGIServer/0.2 CPython/3.11.15
+< Content-Type: application/json
+< X-Frame-Options: DENY
+< Content-Length: 605
+< X-Content-Type-Options: nosniff
+< Referrer-Policy: same-origin
+< Cross-Origin-Opener-Policy: same-origin
+< 
+{ [605 bytes data]
+100   605  100   605    0     0  97706      0 --:--:-- --:--:-- --:--:--   98k
+* Connection #0 to host localhost left intact
+{"state": "KS", "dealers": [{"id": 6, "name": "Kansas City Motors", "address": "789 Broadway, Kansas City, KS", "state": "KS", "phone": "+1 (800) 555-0006", "rating": 4.3}, {"id": 7, "name": "Topeka Auto Sales", "address": "123 Capitol Ave, Topeka, KS", "state": "KS", "phone": "+1 (800) 555-0007", "rating": 3.9}, {"id": 8, "name": "Wichita Cars", "address": "456 Douglas Ave, Wichita, KS", "state": "KS", "phone": "+1 (800) 555-0008", "rating": 4.1}, {"id": 9, "name": "Sunflower Motors", "address": "789 State St, Lawrence, KS", "state": "KS", "phone": "+1 (800) 555-0009", "rating": 4.4}], "total": 4}
