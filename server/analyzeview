@@ -1,0 +1,24 @@
+Note: Unnecessary use of -X or --request, GET is already inferred.
+*   Trying 127.0.0.1:8000...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Connected to localhost (127.0.0.1) port 8000 (#0)
+> GET /analyze/Fantastic%20services HTTP/1.1
+> Host: localhost:8000
+> User-Agent: curl/7.81.0
+> Accept: */*
+> 
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 301 Moved Permanently
+< Date: Wed, 12 Aug 2026 15:25:06 GMT
+< Server: WSGIServer/0.2 CPython/3.11.15
+< Content-Type: text/html; charset=utf-8
+< Location: /analyze/Fantastic%20services/
+< X-Content-Type-Options: nosniff
+< Referrer-Policy: same-origin
+< Cross-Origin-Opener-Policy: same-origin
+< Connection: close
+< 
+{ [0 bytes data]
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+* Closing connection 0

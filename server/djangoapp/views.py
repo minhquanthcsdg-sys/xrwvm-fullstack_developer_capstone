@@ -894,3 +894,69 @@ def get_cars(request):
         'status': 'error',
         'message': 'Method not allowed. Use GET.'
     }, status=405)
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+import re
+
+def analyze_sentiment_text(text):
+    """
+    Simple sentiment analysis function
+    Returns sentiment: positive, negative, or neutral
+    """
+    text_lower = text.lower()
+    
+    # Positive keywords
+    positive_words = [
+        'fantastic', 'excellent', 'great', 'good', 'amazing', 'wonderful',
+        'best', 'perfect', 'outstanding', 'superb', 'exceptional', 'awesome',
+        'love', 'like', 'nice', 'brilliant', 'incredible', 'remarkable',
+        'happy', 'satisfied', 'pleased', 'enjoy', 'recommend'
+    ]
+    
+    # Negative keywords
+    negative_words = [
+        'bad', 'terrible', 'awful', 'horrible', 'worst', 'poor', 'disappointing',
+        'hate', 'dislike', 'unacceptable', 'mediocre', 'subpar',
+        'sad', 'unsatisfied', 'disappointed', 'frustrated', 'annoyed'
+    ]
+    
+    positive_count = sum(1 for word in positive_words if word in text_lower)
+    negative_count = sum(1 for word in negative_words if word in text_lower)
+    
+    if positive_count > negative_count:
+        return 'positive'
+    elif negative_count > positive_count:
+        return 'negative'
+    else:
+        return 'neutral'
+
+@csrf_exempt
+def analyze_review(request, review_text):
+    """
+    API endpoint for sentiment analysis
+    Expected: GET to /analyze/<review_text>
+    Response: {"sentiment": "positive"}
+    """
+    if request.method == 'GET':
+        try:
+            # Decode URL-encoded text
+            import urllib.parse
+            decoded_text = urllib.parse.unquote(review_text)
+            
+            # Analyze sentiment
+            sentiment = analyze_sentiment_text(decoded_text)
+            
+            return JsonResponse({
+                'sentiment': sentiment
+            }, status=200)
+                
+        except Exception as e:
+            return JsonResponse({
+                'error': str(e)
+            }, status=400)
+    
+    return JsonResponse({
+        'error': 'Method not allowed. Use GET.'
+    }, status=405)

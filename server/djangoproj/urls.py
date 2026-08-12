@@ -9,6 +9,7 @@ from djangoapp.views import (
     fetch_dealer_by_id,
     fetch_dealers_by_state,
     get_cars,
+    analyze_review,
     get_all_dealers, 
     get_dealer_by_id, 
     get_dealers_by_state,
@@ -25,7 +26,8 @@ urlpatterns = [
     path('contact/', TemplateView.as_view(template_name="Contact.html")),
     path('djangoapp/login/', login_user, name='login'),
     path('djangoapp/logout/', logout_user, name='logout'),
-    path('djangoapp/get_cars/', get_cars, name='get_cars'),  # New endpoint
+    path('djangoapp/get_cars/', get_cars, name='get_cars'),
+    path('analyze/<str:review_text>/', analyze_review, name='analyze_review'),  # New endpoint
     path('fetchReviews/dealer/<int:dealer_id>/', fetch_dealer_reviews, name='fetch_reviews'),
     path('fetchDealers/', fetch_all_dealers, name='fetch_all_dealers'),
     path('fetchDealer/<int:dealer_id>/', fetch_dealer_by_id, name='fetch_dealer_by_id'),
