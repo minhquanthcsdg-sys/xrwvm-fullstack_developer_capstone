@@ -1,0 +1,40 @@
+name: Simple CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        cd server
+        pip install -r requirements.txt
+    
+    - name: Run Django checks
+      run: |
+        cd server
+        python manage.py check
+    
+    - name: Display success message
+      run: |
+        echo "=========================="
+        echo "✅ CI/CD Pipeline Success"
+        echo "=========================="
+        echo "📅 Date: $(date)"
+        echo "🔄 Commit: ${{ github.sha }}"
+        echo "🌿 Branch: ${{ github.ref_name }}"
+        echo "📦 Repository: ${{ github.repository }}"
+        echo "=========================="
