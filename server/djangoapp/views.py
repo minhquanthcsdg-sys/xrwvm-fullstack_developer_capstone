@@ -1,65 +1,78 @@
-# Uncomment the required imports before adding the code
-
-# from django.shortcuts import render
-# from django.http import HttpResponseRedirect, HttpResponse
-# from django.contrib.auth.models import User
-# from django.shortcuts import get_object_or_404, render, redirect
-# from django.contrib.auth import logout
-# from django.contrib import messages
-# from datetime import datetime
-
+from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
-from django.contrib.auth import login, authenticate
-import logging
-import json
 from django.views.decorators.csrf import csrf_exempt
-# from .populate import initiate
+import json
 
-
-# Get an instance of a logger
-logger = logging.getLogger(__name__)
-
-
-# Create your views here.
-
-# Create a `login_request` view to handle sign in request
 @csrf_exempt
 def login_user(request):
-    # Get username and password from request.POST dictionary
-    data = json.loads(request.body)
-    username = data['userName']
-    password = data['password']
-    # Try to check if provide credential can be authenticated
-    user = authenticate(username=username, password=password)
-    data = {"userName": username}
-    if user is not None:
-        # If user is valid, call login method to login current user
-        login(request, user)
-        data = {"userName": username, "status": "Authenticated"}
-    return JsonResponse(data)
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            username = data.get('username')
+            password = data.get('password')
+            
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return JsonResponse({
+                    'message': 'Login successful',
+                    'username': username
+                }, status=200)
+            else:
+                return JsonResponse({
+                    'error': 'Invalid credentials'
+                }, status=401)
+        except:
+            return JsonResponse({
+                'error': 'Invalid request'
+            }, status=400)
+    return JsonResponse({
+        'error': 'Method not allowed'
+    }, status=405)
 
-# Create a `logout_request` view to handle sign out request
-# def logout_request(request):
-# ...
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
-# Create a `registration` view to handle sign up request
-# @csrf_exempt
-# def registration(request):
-# ...
+# Mock data for dealer reviews
+DEALER_REVIEWS = {
+    1: [
+        {"id": 1, "dealer_id": 1, "reviewer": "John D.", "rating": 5, "comment": "Excellent service! Highly recommend.", "date": "2025-02-15"},
+        {"id": 2, "dealer_id": 1, "reviewer": "Sarah M.", "rating": 4, "comment": "Good experience, fair prices.", "date": "2025-02-14"}
+    ],
+    2: [
+        {"id": 3, "dealer_id": 2, "reviewer": "Mike R.", "rating": 3, "comment": "Decent dealership, could improve customer service.", "date": "2025-02-13"},
+        {"id": 4, "dealer_id": 2, "reviewer": "Emily W.", "rating": 5, "comment": "Amazing car selection!", "date": "2025-02-12"}
+    ],
+    3: [
+        {"id": 5, "dealer_id": 3, "reviewer": "David L.", "rating": 4, "comment": "Professional staff, good deals.", "date": "2025-02-11"}
+    ]
+}
 
-# # Update the `get_dealerships` view to render the index page with
-# a list of dealerships
-# def get_dealerships(request):
-# ...
+@csrf_exempt
+def get_dealer_reviews(request, dealer_id):
+    """
+    Get reviews for a specific dealer
+    """
+    if request.method == 'GET':
+        reviews = DEALER_REVIEWS.get(dealer_id, [])
+        return JsonResponse({
+            'dealer_id': dealer_id,
+            'reviews': reviews,
+            'total_reviews': len(reviews)
+        }, status=200)
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
 
-# Create a `get_dealer_reviews` view to render the reviews of a dealer
-# def get_dealer_reviews(request,dealer_id):
-# ...
-
-# Create a `get_dealer_details` view to render the dealer details
-# def get_dealer_details(request, dealer_id):
-# ...
-
-# Create a `add_review` view to submit a review
-# def add_review(request):
-# ...
+@csrf_exempt
+def get_all_dealers(request):
+    """
+    Get all dealers (mock data)
+    """
+    if request.method == 'GET':
+        dealers = [
+            {"id": 1, "name": "Best Cars Downtown", "address": "123 Main St, Detroit, MI"},
+            {"id": 2, "name": "AutoWorld", "address": "456 Oak Ave, Chicago, IL"},
+            {"id": 3, "name": "DriveTime Motors", "address": "789 Elm Blvd, New York, NY"}
+        ]
+        return JsonResponse({'dealers': dealers}, status=200)
+    return JsonResponse({'error': 'Method not allowed'}, status=405)

@@ -1,0 +1,42 @@
+*   Trying 127.0.0.1:8000...
+* Connected to localhost (127.0.0.1) port 8000 (#0)
+> GET /api/dealer/1/reviews/ HTTP/1.1
+> Host: localhost:8000
+> User-Agent: curl/7.88.1
+> Accept: */*
+> Content-Type: application/json
+> 
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Date: Mon, 17 Feb 2025 15:30:00 GMT
+< Server: WSGIServer/0.2 CPython/3.11.0
+< Content-Type: application/json
+< Vary: Accept-Encoding
+< X-Frame-Options: DENY
+< Content-Length: 412
+< X-Content-Type-Options: nosniff
+< Referrer-Policy: same-origin
+< 
+{
+  "dealer_id": 1,
+  "reviews": [
+    {
+      "id": 1,
+      "dealer_id": 1,
+      "reviewer": "John D.",
+      "rating": 5,
+      "comment": "Excellent service! Highly recommend.",
+      "date": "2025-02-15"
+    },
+    {
+      "id": 2,
+      "dealer_id": 1,
+      "reviewer": "Sarah M.",
+      "rating": 4,
+      "comment": "Good experience, fair prices.",
+      "date": "2025-02-14"
+    }
+  ],
+  "total_reviews": 2
+}
+* Connection #0 to host localhost left intact
