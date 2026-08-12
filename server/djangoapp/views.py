@@ -480,3 +480,87 @@ def logout_user(request):
         'status': 'error',
         'message': 'Method not allowed. Use POST.'
     }, status=405)
+
+from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+@csrf_exempt
+def login_user(request):
+    """
+    API endpoint for user login
+    Expected: POST to /djangoapp/login with {"userName": "username", "password": "password"}
+    Response: {"userName": "username", "status": "Authenticated"}
+    """
+    if request.method == 'POST':
+        try:
+            # Parse JSON data
+            data = json.loads(request.body)
+            username = data.get('userName')  # Changed from 'username' to 'userName'
+            password = data.get('password')
+            
+            # Authenticate user
+            user = authenticate(request, username=username, password=password)
+            
+            if user is not None:
+                login(request, user)
+                return JsonResponse({
+                    'userName': username,
+                    'status': 'Authenticated'
+                }, status=200)
+            else:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Invalid credentials'
+                }, status=401)
+                
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Invalid JSON format'
+            }, status=400)
+        except Exception as e:
+            return JsonResponse({
+                'status': 'error',
+                'message': str(e)
+            }, status=400)
+    
+    return JsonResponse({
+        'status': 'error',
+        'message': 'Method not allowed. Use POST.'
+    }, status=405)
+
+from django.contrib.auth import logout
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def logout_user(request):
+    """
+    API endpoint for user logout
+    Expected: GET to /djangoapp/logout
+    Response: {"userName": ""}
+    """
+    if request.method == 'GET':
+        try:
+            # Get username before logout
+            username = request.user.username if request.user.is_authenticated else ""
+            
+            # Perform logout
+            logout(request)
+            
+            return JsonResponse({
+                'userName': ''
+            }, status=200)
+                
+        except Exception as e:
+            return JsonResponse({
+                'status': 'error',
+                'message': str(e)
+            }, status=400)
+    
+    return JsonResponse({
+        'status': 'error',
+        'message': 'Method not allowed. Use GET.'
+    }, status=405)
