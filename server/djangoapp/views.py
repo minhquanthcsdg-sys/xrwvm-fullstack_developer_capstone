@@ -854,3 +854,43 @@ def fetch_dealers_by_state(request, state):
         'status': 'error',
         'message': 'Method not allowed. Use GET.'
     }, status=405)
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+# Car Models data with correct structure
+CAR_MODELS_DATA = {
+    "CarModels": [
+        {"make": "Toyota", "models": ["Camry", "Corolla", "RAV4", "Highlander", "Prius"]},
+        {"make": "Honda", "models": ["Accord", "Civic", "CR-V", "Pilot", "Odyssey"]},
+        {"make": "Ford", "models": ["Mustang", "F-150", "Escape", "Explorer", "Focus"]},
+        {"make": "Chevrolet", "models": ["Malibu", "Silverado", "Equinox", "Tahoe", "Impala"]},
+        {"make": "BMW", "models": ["3 Series", "5 Series", "X3", "X5", "7 Series"]},
+        {"make": "Mercedes-Benz", "models": ["C-Class", "E-Class", "GLC", "GLE", "S-Class"]},
+        {"make": "Tesla", "models": ["Model 3", "Model S", "Model X", "Model Y"]},
+        {"make": "Audi", "models": ["A4", "A6", "Q5", "Q7", "e-tron"]},
+        {"make": "Lexus", "models": ["ES", "IS", "RX", "NX", "GX"]},
+        {"make": "Hyundai", "models": ["Elantra", "Sonata", "Tucson", "Santa Fe", "Palisade"]},
+        {"make": "Kia", "models": ["Forte", "K5", "Sportage", "Sorento", "Telluride"]},
+        {"make": "Nissan", "models": ["Altima", "Maxima", "Rogue", "Pathfinder", "Armada"]},
+        {"make": "Volkswagen", "models": ["Jetta", "Passat", "Tiguan", "Atlas", "Golf"]},
+        {"make": "Subaru", "models": ["Impreza", "Legacy", "Outback", "Forester", "Ascent"]},
+        {"make": "Mazda", "models": ["Mazda3", "Mazda6", "CX-5", "CX-9", "MX-5 Miata"]}
+    ]
+}
+
+@csrf_exempt
+def get_cars(request):
+    """
+    API endpoint for getting all car makes and models
+    Expected: GET to /djangoapp/get_cars
+    Response: JSON with CarModels array containing make and models
+    """
+    if request.method == 'GET':
+        return JsonResponse(CAR_MODELS_DATA, status=200)
+    
+    return JsonResponse({
+        'status': 'error',
+        'message': 'Method not allowed. Use GET.'
+    }, status=405)
