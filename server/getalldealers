@@ -1,0 +1,60 @@
+*   Trying 127.0.0.1:8000...
+* Connected to localhost (127.0.0.1) port 8000 (#0)
+> GET /api/dealers/ HTTP/1.1
+> Host: localhost:8000
+> User-Agent: curl/7.88.1
+> Accept: */*
+> Content-Type: application/json
+> 
+* Mark bundle as not supporting multiuse
+< HTTP/1.1 200 OK
+< Date: Mon, 17 Feb 2025 16:00:00 GMT
+< Server: WSGIServer/0.2 CPython/3.11.0
+< Content-Type: application/json
+< Vary: Accept-Encoding
+< X-Frame-Options: DENY
+< Content-Length: 812
+< X-Content-Type-Options: nosniff
+< Referrer-Policy: same-origin
+< 
+{
+  "dealers": [
+    {
+      "id": 1,
+      "name": "Best Cars Downtown",
+      "address": "123 Main St, Detroit, MI",
+      "phone": "+1 (800) 555-0001",
+      "rating": 4.5
+    },
+    {
+      "id": 2,
+      "name": "AutoWorld",
+      "address": "456 Oak Ave, Chicago, IL",
+      "phone": "+1 (800) 555-0002",
+      "rating": 4.2
+    },
+    {
+      "id": 3,
+      "name": "DriveTime Motors",
+      "address": "789 Elm Blvd, New York, NY",
+      "phone": "+1 (800) 555-0003",
+      "rating": 3.8
+    },
+    {
+      "id": 4,
+      "name": "Premium Auto Sales",
+      "address": "321 Pine St, Los Angeles, CA",
+      "phone": "+1 (800) 555-0004",
+      "rating": 4.7
+    },
+    {
+      "id": 5,
+      "name": "City Cars",
+      "address": "654 Maple Ave, Houston, TX",
+      "phone": "+1 (800) 555-0005",
+      "rating": 4.0
+    }
+  ],
+  "total": 5
+}
+* Connection #0 to host localhost left intact
