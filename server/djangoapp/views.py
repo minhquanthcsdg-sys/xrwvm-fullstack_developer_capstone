@@ -669,3 +669,79 @@ def fetch_dealer_reviews(request, dealer_id):
         'status': 'error',
         'message': 'Method not allowed. Use GET.'
     }, status=405)
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+# 50 Dealers data with all required fields
+ALL_DEALERS_50 = [
+    {"id": 1, "city": "New York", "state": "NY", "address": "123 Broadway", "zip": "10001", "lat": "40.7128", "long": "-74.0060", "short_name": "NY Auto", "full_name": "New York Auto Sales"},
+    {"id": 2, "city": "Los Angeles", "state": "CA", "address": "456 Hollywood Blvd", "zip": "90028", "lat": "34.0522", "long": "-118.2437", "short_name": "LA Cars", "full_name": "Los Angeles Car Dealership"},
+    {"id": 3, "city": "Chicago", "state": "IL", "address": "789 Michigan Ave", "zip": "60601", "lat": "41.8781", "long": "-87.6298", "short_name": "Chi Town", "full_name": "Chicago Motor Company"},
+    {"id": 4, "city": "Houston", "state": "TX", "address": "321 Main St", "zip": "77001", "lat": "29.7604", "long": "-95.3698", "short_name": "H-Town Auto", "full_name": "Houston Auto Group"},
+    {"id": 5, "city": "Phoenix", "state": "AZ", "address": "654 Camelback Rd", "zip": "85001", "lat": "33.4484", "long": "-112.0740", "short_name": "Phoenix Cars", "full_name": "Phoenix Motor Sales"},
+    {"id": 6, "city": "Philadelphia", "state": "PA", "address": "147 Market St", "zip": "19101", "lat": "39.9526", "long": "-75.1652", "short_name": "Philly Auto", "full_name": "Philadelphia Auto Dealers"},
+    {"id": 7, "city": "San Antonio", "state": "TX", "address": "258 Riverwalk", "zip": "78201", "lat": "29.4241", "long": "-98.4936", "short_name": "SA Motors", "full_name": "San Antonio Motor Group"},
+    {"id": 8, "city": "San Diego", "state": "CA", "address": "369 Pacific Hwy", "zip": "92101", "lat": "32.7157", "long": "-117.1611", "short_name": "SD Auto", "full_name": "San Diego Auto Sales"},
+    {"id": 9, "city": "Dallas", "state": "TX", "address": "741 Commerce St", "zip": "75201", "lat": "32.7767", "long": "-96.7970", "short_name": "Big D Cars", "full_name": "Dallas Motor Company"},
+    {"id": 10, "city": "San Jose", "state": "CA", "address": "852 Silicon Way", "zip": "95101", "lat": "37.3382", "long": "-121.8863", "short_name": "SJ Auto", "full_name": "San Jose Auto Group"},
+    {"id": 11, "city": "Austin", "state": "TX", "address": "963 Congress Ave", "zip": "78701", "lat": "30.2672", "long": "-97.7431", "short_name": "ATX Cars", "full_name": "Austin Motor Sales"},
+    {"id": 12, "city": "Jacksonville", "state": "FL", "address": "159 Beach Blvd", "zip": "32201", "lat": "30.3322", "long": "-81.6557", "short_name": "Jax Auto", "full_name": "Jacksonville Auto Dealers"},
+    {"id": 13, "city": "Fort Worth", "state": "TX", "address": "753 Stockyard", "zip": "76101", "lat": "32.7555", "long": "-97.3308", "short_name": "FW Motors", "full_name": "Fort Worth Motor Group"},
+    {"id": 14, "city": "Columbus", "state": "OH", "address": "159 High St", "zip": "43201", "lat": "39.9612", "long": "-82.9988", "short_name": "Ohio Auto", "full_name": "Columbus Auto Sales"},
+    {"id": 15, "city": "Charlotte", "state": "NC", "address": "753 Trade St", "zip": "28201", "lat": "35.2271", "long": "-80.8431", "short_name": "Queen City", "full_name": "Charlotte Motor Company"},
+    {"id": 16, "city": "Detroit", "state": "MI", "address": "123 Motor City", "zip": "48201", "lat": "42.3314", "long": "-83.0458", "short_name": "Motor City", "full_name": "Detroit Auto Group"},
+    {"id": 17, "city": "El Paso", "state": "TX", "address": "456 Border Hwy", "zip": "79901", "lat": "31.7619", "long": "-106.4850", "short_name": "El Paso Auto", "full_name": "El Paso Motor Sales"},
+    {"id": 18, "city": "Memphis", "state": "TN", "address": "789 Elvis Blvd", "zip": "38101", "lat": "35.1495", "long": "-90.0490", "short_name": "Memphis Cars", "full_name": "Memphis Auto Dealers"},
+    {"id": 19, "city": "Boston", "state": "MA", "address": "321 Beacon St", "zip": "02101", "lat": "42.3601", "long": "-71.0589", "short_name": "Beantown Auto", "full_name": "Boston Motor Group"},
+    {"id": 20, "city": "Seattle", "state": "WA", "address": "654 Pike St", "zip": "98101", "lat": "47.6062", "long": "-122.3321", "short_name": "Emerald City", "full_name": "Seattle Auto Sales"},
+    {"id": 21, "city": "Denver", "state": "CO", "address": "147 Colorado Blvd", "zip": "80201", "lat": "39.7392", "long": "-104.9903", "short_name": "Mile High", "full_name": "Denver Motor Company"},
+    {"id": 22, "city": "Washington", "state": "DC", "address": "258 Capitol St", "zip": "20001", "lat": "38.9072", "long": "-77.0369", "short_name": "DC Auto", "full_name": "Washington Auto Group"},
+    {"id": 23, "city": "Nashville", "state": "TN", "address": "369 Music Row", "zip": "37201", "lat": "36.1627", "long": "-86.7816", "short_name": "Music City", "full_name": "Nashville Motor Sales"},
+    {"id": 24, "city": "Baltimore", "state": "MD", "address": "741 Harbor St", "zip": "21201", "lat": "39.2904", "long": "-76.6122", "short_name": "Bmore Auto", "full_name": "Baltimore Auto Dealers"},
+    {"id": 25, "city": "Louisville", "state": "KY", "address": "852 Derby Ave", "zip": "40201", "lat": "38.2527", "long": "-85.7585", "short_name": "Derby City", "full_name": "Louisville Motor Group"},
+    {"id": 26, "city": "Milwaukee", "state": "WI", "address": "963 Lakefront", "zip": "53201", "lat": "43.0389", "long": "-87.9065", "short_name": "Milw Auto", "full_name": "Milwaukee Auto Sales"},
+    {"id": 27, "city": "Portland", "state": "OR", "address": "159 Burnside St", "zip": "97201", "lat": "45.5051", "long": "-122.6750", "short_name": "Rose City", "full_name": "Portland Motor Company"},
+    {"id": 28, "city": "Oklahoma City", "state": "OK", "address": "753 Thunder Blvd", "zip": "73101", "lat": "35.4676", "long": "-97.5164", "short_name": "OKC Auto", "full_name": "Oklahoma City Auto Group"},
+    {"id": 29, "city": "Las Vegas", "state": "NV", "address": "159 Strip Blvd", "zip": "89101", "lat": "36.1699", "long": "-115.1398", "short_name": "Vegas Cars", "full_name": "Las Vegas Motor Sales"},
+    {"id": 30, "city": "Albuquerque", "state": "NM", "address": "753 Central Ave", "zip": "87101", "lat": "35.0853", "long": "-106.6056", "short_name": "ABQ Auto", "full_name": "Albuquerque Auto Dealers"},
+    {"id": 31, "city": "Tucson", "state": "AZ", "address": "456 Desert Blvd", "zip": "85701", "lat": "32.2226", "long": "-110.9747", "short_name": "Tucson Motors", "full_name": "Tucson Motor Group"},
+    {"id": 32, "city": "Fresno", "state": "CA", "address": "789 Vineyard Ave", "zip": "93650", "lat": "36.7468", "long": "-119.7726", "short_name": "Fresno Auto", "full_name": "Fresno Auto Sales"},
+    {"id": 33, "city": "Sacramento", "state": "CA", "address": "321 Capitol Mall", "zip": "94203", "lat": "38.5816", "long": "-121.4944", "short_name": "Sactown Auto", "full_name": "Sacramento Motor Company"},
+    {"id": 34, "city": "Long Beach", "state": "CA", "address": "654 Shoreline", "zip": "90802", "lat": "33.7701", "long": "-118.1937", "short_name": "LB Auto", "full_name": "Long Beach Auto Group"},
+    {"id": 35, "city": "Kansas City", "state": "MO", "address": "741 Plaza St", "zip": "64101", "lat": "39.0997", "long": "-94.5786", "short_name": "KC Motors", "full_name": "Kansas City Motor Sales"},
+    {"id": 36, "city": "Mesa", "state": "AZ", "address": "852 Main St", "zip": "85201", "lat": "33.4152", "long": "-111.8315", "short_name": "Mesa Auto", "full_name": "Mesa Auto Dealers"},
+    {"id": 37, "city": "Atlanta", "state": "GA", "address": "963 Peachtree", "zip": "30301", "lat": "33.7490", "long": "-84.3880", "short_name": "Hotlanta Auto", "full_name": "Atlanta Motor Group"},
+    {"id": 38, "city": "Miami", "state": "FL", "address": "159 Ocean Dr", "zip": "33101", "lat": "25.7617", "long": "-80.1918", "short_name": "MIA Cars", "full_name": "Miami Auto Sales"},
+    {"id": 39, "city": "Raleigh", "state": "NC", "address": "753 Capital Blvd", "zip": "27601", "lat": "35.7796", "long": "-78.6382", "short_name": "Raleigh Auto", "full_name": "Raleigh Motor Company"},
+    {"id": 40, "city": "Omaha", "state": "NE", "address": "159 Dodge St", "zip": "68101", "lat": "41.2565", "long": "-95.9345", "short_name": "Omaha Motors", "full_name": "Omaha Auto Group"},
+    {"id": 41, "city": "Tulsa", "state": "OK", "address": "456 Cherokee Ave", "zip": "74101", "lat": "36.1540", "long": "-95.9928", "short_name": "Tulsa Auto", "full_name": "Tulsa Motor Sales"},
+    {"id": 42, "city": "Oakland", "state": "CA", "address": "789 Lake Merritt", "zip": "94601", "lat": "37.8044", "long": "-122.2711", "short_name": "Oakland Cars", "full_name": "Oakland Auto Dealers"},
+    {"id": 43, "city": "Minneapolis", "state": "MN", "address": "321 Nicolette", "zip": "55401", "lat": "44.9778", "long": "-93.2650", "short_name": "Twin Cities", "full_name": "Minneapolis Motor Group"},
+    {"id": 44, "city": "Wichita", "state": "KS", "address": "654 Douglas Ave", "zip": "67201", "lat": "37.6872", "long": "-97.3301", "short_name": "Wichita Auto", "full_name": "Wichita Auto Sales"},
+    {"id": 45, "city": "New Orleans", "state": "LA", "address": "147 Bourbon St", "zip": "70101", "lat": "29.9511", "long": "-90.0715", "short_name": "NOLA Cars", "full_name": "New Orleans Motor Company"},
+    {"id": 46, "city": "Cleveland", "state": "OH", "address": "258 Rockwell Ave", "zip": "44101", "lat": "41.4993", "long": "-81.6944", "short_name": "CLE Auto", "full_name": "Cleveland Auto Group"},
+    {"id": 47, "city": "Tampa", "state": "FL", "address": "369 Bay Shore", "zip": "33601", "lat": "27.9506", "long": "-82.4572", "short_name": "Tampa Motors", "full_name": "Tampa Motor Sales"},
+    {"id": 48, "city": "Pittsburgh", "state": "PA", "address": "741 Steel City", "zip": "15201", "lat": "40.4406", "long": "-79.9959", "short_name": "Pgh Auto", "full_name": "Pittsburgh Auto Dealers"},
+    {"id": 49, "city": "St. Louis", "state": "MO", "address": "852 Arch Blvd", "zip": "63101", "lat": "38.6270", "long": "-90.1994", "short_name": "STL Motors", "full_name": "St. Louis Motor Group"},
+    {"id": 50, "city": "Salt Lake City", "state": "UT", "address": "963 Temple Square", "zip": "84101", "lat": "40.7608", "long": "-111.8910", "short_name": "SLC Auto", "full_name": "Salt Lake City Auto Sales"}
+]
+
+@csrf_exempt
+def fetch_all_dealers(request):
+    """
+    API endpoint for fetching all 50 dealers
+    Expected: GET to /fetchDealers
+    Response: JSON with 50 dealer objects including id, city, state, address, zip, lat, long, short_name, full_name
+    """
+    if request.method == 'GET':
+        return JsonResponse({
+            'dealers': ALL_DEALERS_50,
+            'total': len(ALL_DEALERS_50)
+        }, status=200)
+    
+    return JsonResponse({
+        'status': 'error',
+        'message': 'Method not allowed. Use GET.'
+    }, status=405)
