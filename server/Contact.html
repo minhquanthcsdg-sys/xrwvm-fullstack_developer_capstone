@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contact Us - Best Cars</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+</head>
+<body>
+    <!-- Navigation Bar - giống như các page khác -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Best Cars</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contact Content -->
+    <div class="container mt-4">
+        <h1>Contact Us</h1>
+        <p class="lead">We'd love to hear from you!</p>
+        <hr>
+        
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>📍 Address</h5>
+                        <p>123 Automotive Boulevard<br>
+                        Detroit, MI 48201<br>
+                        USA</p>
+                        
+                        <h5>📞 Phone</h5>
+                        <p><a href="tel:+18005551234">+1 (800) 555-1234</a></p>
+                        
+                        <h5>✉️ Email</h5>
+                        <p><a href="mailto:info@bestcarsdealership.com">info@bestcarsdealership.com</a></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>🕐 Business Hours</h5>
+                        <table class="table">
+                            <tr><td>Monday - Friday</td><td>9:00 AM - 8:00 PM</td></tr>
+                            <tr><td>Saturday</td><td>10:00 AM - 6:00 PM</td></tr>
+                            <tr><td>Sunday</td><td>12:00 PM - 5:00 PM</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Send us a message</h5>
+                        <form>
+                            <div class="mb-3">
+                                <label>Name</label>
+                                <input type="text" class="form-control" placeholder="Your name">
+                            </div>
+                            <div class="mb-3">
+                                <label>Email</label>
+                                <input type="email" class="form-control" placeholder="your@email.com">
+                            </div>
+                            <div class="mb-3">
+                                <label>Message</label>
+                                <textarea class="form-control" rows="3" placeholder="How can we help?"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/static/bootstrap.bundle.min.js"></script>
+</body>
+</html>
