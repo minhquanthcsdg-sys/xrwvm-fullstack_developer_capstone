@@ -113,3 +113,24 @@ def get_dealer_by_id(request, dealer_id):
             return JsonResponse({'dealer': dealer}, status=200)
         return JsonResponse({'error': 'Dealer not found'}, status=404)
     return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+@csrf_exempt
+def get_dealer_by_id(request, dealer_id):
+    """
+    Get dealer by ID
+    """
+    if request.method == 'GET':
+        # Mock data for dealers
+        ALL_DEALERS = [
+            {"id": 1, "name": "Best Cars Downtown", "address": "123 Main St, Detroit, MI", "phone": "+1 (800) 555-0001", "rating": 4.5, "email": "info@bestcarsdowntown.com", "website": "www.bestcarsdowntown.com"},
+            {"id": 2, "name": "AutoWorld", "address": "456 Oak Ave, Chicago, IL", "phone": "+1 (800) 555-0002", "rating": 4.2, "email": "info@autoworld.com", "website": "www.autoworld.com"},
+            {"id": 3, "name": "DriveTime Motors", "address": "789 Elm Blvd, New York, NY", "phone": "+1 (800) 555-0003", "rating": 3.8, "email": "info@drivetimemotors.com", "website": "www.drivetimemotors.com"},
+            {"id": 4, "name": "Premium Auto Sales", "address": "321 Pine St, Los Angeles, CA", "phone": "+1 (800) 555-0004", "rating": 4.7, "email": "info@premiumautosales.com", "website": "www.premiumautosales.com"},
+            {"id": 5, "name": "City Cars", "address": "654 Maple Ave, Houston, TX", "phone": "+1 (800) 555-0005", "rating": 4.0, "email": "info@citycars.com", "website": "www.citycars.com"}
+        ]
+        
+        dealer = next((d for d in ALL_DEALERS if d['id'] == dealer_id), None)
+        if dealer:
+            return JsonResponse({'dealer': dealer}, status=200)
+        return JsonResponse({'error': 'Dealer not found'}, status=404)
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
