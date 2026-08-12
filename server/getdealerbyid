@@ -3,24 +3,23 @@ Note: Unnecessary use of -X or --request, GET is already inferred.
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Connected to localhost (127.0.0.1) port 8000 (#0)
-> GET /api/dealer/1/ HTTP/1.1
+> GET /fetchDealer/1/ HTTP/1.1
 > Host: localhost:8000
 > User-Agent: curl/7.81.0
 > Accept: */*
-> Content-Type: application/json
 > 
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
-< Date: Wed, 12 Aug 2026 13:54:17 GMT
+< Date: Wed, 12 Aug 2026 15:06:47 GMT
 < Server: WSGIServer/0.2 CPython/3.11.15
 < Content-Type: application/json
 < X-Frame-Options: DENY
-< Content-Length: 212
+< Content-Length: 198
 < X-Content-Type-Options: nosniff
 < Referrer-Policy: same-origin
 < Cross-Origin-Opener-Policy: same-origin
 < 
-{ [212 bytes data]
-100   212  100   212    0     0  29448      0 --:--:-- --:--:-- --:--:-- 30285
+{ [198 bytes data]
+100   198  100   198    0     0  31935      0 --:--:-- --:--:-- --:--:-- 33000
 * Connection #0 to host localhost left intact
-{"dealer": {"id": 1, "name": "Best Cars Downtown", "address": "123 Main St, Detroit, MI", "phone": "+1 (800) 555-0001", "rating": 4.5, "email": "info@bestcarsdowntown.com", "website": "www.bestcarsdowntown.com"}}
+{"dealer": {"id": 1, "city": "New York", "state": "NY", "address": "123 Broadway", "zip": "10001", "lat": "40.7128", "long": "-74.0060", "short_name": "NY Auto", "full_name": "New York Auto Sales"}}

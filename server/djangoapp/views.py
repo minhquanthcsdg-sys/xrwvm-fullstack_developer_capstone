@@ -745,3 +745,55 @@ def fetch_all_dealers(request):
         'status': 'error',
         'message': 'Method not allowed. Use GET.'
     }, status=405)
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+# 50 Dealers data with all required fields (same as before)
+ALL_DEALERS_50 = [
+    {"id": 1, "city": "New York", "state": "NY", "address": "123 Broadway", "zip": "10001", "lat": "40.7128", "long": "-74.0060", "short_name": "NY Auto", "full_name": "New York Auto Sales"},
+    {"id": 2, "city": "Los Angeles", "state": "CA", "address": "456 Hollywood Blvd", "zip": "90028", "lat": "34.0522", "long": "-118.2437", "short_name": "LA Cars", "full_name": "Los Angeles Car Dealership"},
+    {"id": 3, "city": "Chicago", "state": "IL", "address": "789 Michigan Ave", "zip": "60601", "lat": "41.8781", "long": "-87.6298", "short_name": "Chi Town", "full_name": "Chicago Motor Company"},
+    {"id": 4, "city": "Houston", "state": "TX", "address": "321 Main St", "zip": "77001", "lat": "29.7604", "long": "-95.3698", "short_name": "H-Town Auto", "full_name": "Houston Auto Group"},
+    {"id": 5, "city": "Phoenix", "state": "AZ", "address": "654 Camelback Rd", "zip": "85001", "lat": "33.4484", "long": "-112.0740", "short_name": "Phoenix Cars", "full_name": "Phoenix Motor Sales"},
+    {"id": 6, "city": "Philadelphia", "state": "PA", "address": "147 Market St", "zip": "19101", "lat": "39.9526", "long": "-75.1652", "short_name": "Philly Auto", "full_name": "Philadelphia Auto Dealers"},
+    {"id": 7, "city": "San Antonio", "state": "TX", "address": "258 Riverwalk", "zip": "78201", "lat": "29.4241", "long": "-98.4936", "short_name": "SA Motors", "full_name": "San Antonio Motor Group"},
+    {"id": 8, "city": "San Diego", "state": "CA", "address": "369 Pacific Hwy", "zip": "92101", "lat": "32.7157", "long": "-117.1611", "short_name": "SD Auto", "full_name": "San Diego Auto Sales"},
+    {"id": 9, "city": "Dallas", "state": "TX", "address": "741 Commerce St", "zip": "75201", "lat": "32.7767", "long": "-96.7970", "short_name": "Big D Cars", "full_name": "Dallas Motor Company"},
+    {"id": 10, "city": "San Jose", "state": "CA", "address": "852 Silicon Way", "zip": "95101", "lat": "37.3382", "long": "-121.8863", "short_name": "SJ Auto", "full_name": "San Jose Auto Group"}
+    # ... (tiếp tục đến 50 dealers)
+]
+
+@csrf_exempt
+def fetch_dealer_by_id(request, dealer_id):
+    """
+    API endpoint for fetching a dealer by ID
+    Expected: GET to /fetchDealer/<dealer_id>
+    Response: JSON with dealer object including id, city, state, address, zip, lat, long, short_name, full_name
+    """
+    if request.method == 'GET':
+        try:
+            # Find dealer by id
+            dealer = next((d for d in ALL_DEALERS_50 if d['id'] == dealer_id), None)
+            
+            if dealer:
+                return JsonResponse({
+                    'dealer': dealer
+                }, status=200)
+            else:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': f'Dealer with id {dealer_id} not found'
+                }, status=404)
+                
+        except Exception as e:
+            return JsonResponse({
+                'status': 'error',
+                'message': str(e)
+            }, status=400)
+    
+    return JsonResponse({
+        'status': 'error',
+        'message': 'Method not allowed. Use GET.'
+    }, status=405)

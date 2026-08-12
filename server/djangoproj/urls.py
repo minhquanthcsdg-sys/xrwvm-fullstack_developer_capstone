@@ -6,6 +6,7 @@ from djangoapp.views import (
     logout_user,
     fetch_dealer_reviews,
     fetch_all_dealers,
+    fetch_dealer_by_id,
     get_all_dealers, 
     get_dealer_by_id, 
     get_dealers_by_state,
@@ -23,7 +24,8 @@ urlpatterns = [
     path('djangoapp/login/', login_user, name='login'),
     path('djangoapp/logout/', logout_user, name='logout'),
     path('fetchReviews/dealer/<int:dealer_id>/', fetch_dealer_reviews, name='fetch_reviews'),
-    path('fetchDealers/', fetch_all_dealers, name='fetch_all_dealers'),  # New endpoint
+    path('fetchDealers/', fetch_all_dealers, name='fetch_all_dealers'),
+    path('fetchDealer/<int:dealer_id>/', fetch_dealer_by_id, name='fetch_dealer_by_id'),  # New endpoint
     path('api/dealers/', get_all_dealers, name='all_dealers'),
     path('api/dealer/<int:dealer_id>/', get_dealer_by_id, name='dealer_by_id'),
     path('api/dealers/state/<str:state>/', get_dealers_by_state, name='dealers_by_state'),
