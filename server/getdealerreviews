@@ -1,42 +1,25 @@
+Note: Unnecessary use of -X or --request, GET is already inferred.
 *   Trying 127.0.0.1:8000...
-* Connected to localhost (127.0.0.1) port 8000 (#0)
-> GET /api/dealer/1/reviews/ HTTP/1.1
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Connected to localhost (127.0.0.1) port 8000 (#0)
+> GET /fetchReviews/dealer/1/ HTTP/1.1
 > Host: localhost:8000
-> User-Agent: curl/7.88.1
+> User-Agent: curl/7.81.0
 > Accept: */*
-> Content-Type: application/json
 > 
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
-< Date: Mon, 17 Feb 2025 15:30:00 GMT
-< Server: WSGIServer/0.2 CPython/3.11.0
+< Date: Wed, 12 Aug 2026 14:49:21 GMT
+< Server: WSGIServer/0.2 CPython/3.11.15
 < Content-Type: application/json
-< Vary: Accept-Encoding
 < X-Frame-Options: DENY
-< Content-Length: 412
+< Content-Length: 620
 < X-Content-Type-Options: nosniff
 < Referrer-Policy: same-origin
+< Cross-Origin-Opener-Policy: same-origin
 < 
-{
-  "dealer_id": 1,
-  "reviews": [
-    {
-      "id": 1,
-      "dealer_id": 1,
-      "reviewer": "John D.",
-      "rating": 5,
-      "comment": "Excellent service! Highly recommend.",
-      "date": "2025-02-15"
-    },
-    {
-      "id": 2,
-      "dealer_id": 1,
-      "reviewer": "Sarah M.",
-      "rating": 4,
-      "comment": "Good experience, fair prices.",
-      "date": "2025-02-14"
-    }
-  ],
-  "total_reviews": 2
-}
+{ [620 bytes data]
+100   620  100   620    0     0  70800      0 --:--:-- --:--:-- --:--:-- 77500
 * Connection #0 to host localhost left intact
+{"reviews": [{"id": 1, "name": "John D.", "dealership": 1, "review": "Excellent service! Highly recommend.", "purchase": true, "purchase_date": "2025-01-15", "car_make": "Toyota", "car_model": "Camry", "car_year": 2024}, {"id": 2, "name": "Sarah M.", "dealership": 1, "review": "Good experience, fair prices.", "purchase": true, "purchase_date": "2025-01-10", "car_make": "Honda", "car_model": "Accord", "car_year": 2024}, {"id": 3, "name": "Michael R.", "dealership": 1, "review": "Great selection of cars!", "purchase": false, "purchase_date": null, "car_make": null, "car_model": null, "car_year": null}], "total": 3}

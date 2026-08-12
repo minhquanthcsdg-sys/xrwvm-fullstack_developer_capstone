@@ -564,3 +564,108 @@ def logout_user(request):
         'status': 'error',
         'message': 'Method not allowed. Use GET.'
     }, status=405)
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+# Mock data for dealer reviews with correct fields
+DEALER_REVIEWS_DATA = {
+    1: [
+        {
+            "id": 1,
+            "name": "John D.",
+            "dealership": 1,
+            "review": "Excellent service! Highly recommend.",
+            "purchase": True,
+            "purchase_date": "2025-01-15",
+            "car_make": "Toyota",
+            "car_model": "Camry",
+            "car_year": 2024
+        },
+        {
+            "id": 2,
+            "name": "Sarah M.",
+            "dealership": 1,
+            "review": "Good experience, fair prices.",
+            "purchase": True,
+            "purchase_date": "2025-01-10",
+            "car_make": "Honda",
+            "car_model": "Accord",
+            "car_year": 2024
+        },
+        {
+            "id": 3,
+            "name": "Michael R.",
+            "dealership": 1,
+            "review": "Great selection of cars!",
+            "purchase": False,
+            "purchase_date": None,
+            "car_make": None,
+            "car_model": None,
+            "car_year": None
+        }
+    ],
+    2: [
+        {
+            "id": 4,
+            "name": "Emily W.",
+            "dealership": 2,
+            "review": "Amazing car selection and friendly staff!",
+            "purchase": True,
+            "purchase_date": "2025-02-01",
+            "car_make": "BMW",
+            "car_model": "3 Series",
+            "car_year": 2024
+        },
+        {
+            "id": 5,
+            "name": "David L.",
+            "dealership": 2,
+            "review": "Professional service, good deals.",
+            "purchase": True,
+            "purchase_date": "2025-01-20",
+            "car_make": "Mercedes-Benz",
+            "car_model": "C-Class",
+            "car_year": 2024
+        }
+    ],
+    3: [
+        {
+            "id": 6,
+            "name": "Lisa M.",
+            "dealership": 3,
+            "review": "Excellent customer service!",
+            "purchase": True,
+            "purchase_date": "2025-02-05",
+            "car_make": "Ford",
+            "car_model": "Mustang",
+            "car_year": 2024
+        }
+    ]
+}
+
+@csrf_exempt
+def fetch_dealer_reviews(request, dealer_id):
+    """
+    API endpoint for fetching dealer reviews
+    Expected: GET to /fetchReviews/dealer/<dealer_id>
+    Response: JSON with review fields including name, dealership, review, purchase, purchase_date, car_make, car_model, car_year
+    """
+    if request.method == 'GET':
+        try:
+            reviews = DEALER_REVIEWS_DATA.get(dealer_id, [])
+            return JsonResponse({
+                'reviews': reviews,
+                'total': len(reviews)
+            }, status=200)
+        except Exception as e:
+            return JsonResponse({
+                'status': 'error',
+                'message': str(e)
+            }, status=400)
+    
+    return JsonResponse({
+        'status': 'error',
+        'message': 'Method not allowed. Use GET.'
+    }, status=405)
