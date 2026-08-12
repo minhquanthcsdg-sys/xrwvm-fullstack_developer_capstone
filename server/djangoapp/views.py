@@ -797,3 +797,60 @@ def fetch_dealer_by_id(request, dealer_id):
         'status': 'error',
         'message': 'Method not allowed. Use GET.'
     }, status=405)
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+# 50 Dealers data with all required fields
+ALL_DEALERS_50 = [
+    {"id": 1, "city": "New York", "state": "NY", "address": "123 Broadway", "zip": "10001", "lat": "40.7128", "long": "-74.0060", "short_name": "NY Auto", "full_name": "New York Auto Sales"},
+    {"id": 2, "city": "Los Angeles", "state": "CA", "address": "456 Hollywood Blvd", "zip": "90028", "lat": "34.0522", "long": "-118.2437", "short_name": "LA Cars", "full_name": "Los Angeles Car Dealership"},
+    {"id": 3, "city": "Chicago", "state": "IL", "address": "789 Michigan Ave", "zip": "60601", "lat": "41.8781", "long": "-87.6298", "short_name": "Chi Town", "full_name": "Chicago Motor Company"},
+    {"id": 4, "city": "Houston", "state": "TX", "address": "321 Main St", "zip": "77001", "lat": "29.7604", "long": "-95.3698", "short_name": "H-Town Auto", "full_name": "Houston Auto Group"},
+    {"id": 5, "city": "Phoenix", "state": "AZ", "address": "654 Camelback Rd", "zip": "85001", "lat": "33.4484", "long": "-112.0740", "short_name": "Phoenix Cars", "full_name": "Phoenix Motor Sales"},
+    {"id": 6, "city": "Kansas City", "state": "KS", "address": "789 Broadway", "zip": "64101", "lat": "39.0997", "long": "-94.5786", "short_name": "KC Motors", "full_name": "Kansas City Motor Sales"},
+    {"id": 7, "city": "Topeka", "state": "KS", "address": "123 Capitol Ave", "zip": "66601", "lat": "39.0473", "long": "-95.6758", "short_name": "Topeka Auto", "full_name": "Topeka Auto Dealers"},
+    {"id": 8, "city": "Wichita", "state": "KS", "address": "456 Douglas Ave", "zip": "67201", "lat": "37.6872", "long": "-97.3301", "short_name": "Wichita Auto", "full_name": "Wichita Auto Sales"},
+    {"id": 9, "city": "Lawrence", "state": "KS", "address": "789 Massachusetts St", "zip": "66044", "lat": "38.9717", "long": "-95.2352", "short_name": "Lawrence Motors", "full_name": "Lawrence Motor Group"},
+    {"id": 10, "city": "Manhattan", "state": "KS", "address": "321 Poyntz Ave", "zip": "66502", "lat": "39.1836", "long": "-96.5717", "short_name": "Manhattan Auto", "full_name": "Manhattan Auto Sales"},
+    {"id": 11, "city": "Olathe", "state": "KS", "address": "159 Santa Fe St", "zip": "66061", "lat": "38.8814", "long": "-94.8191", "short_name": "Olathe Cars", "full_name": "Olathe Motor Company"},
+    {"id": 12, "city": "Salina", "state": "KS", "address": "753 Iron Ave", "zip": "67401", "lat": "38.8403", "long": "-97.6114", "short_name": "Salina Auto", "full_name": "Salina Auto Group"},
+    {"id": 13, "city": "Hays", "state": "KS", "address": "147 Main St", "zip": "67601", "lat": "38.8792", "long": "-99.3268", "short_name": "Hays Motors", "full_name": "Hays Motor Sales"},
+    {"id": 14, "city": "Dodge City", "state": "KS", "address": "258 Wyatt Earp", "zip": "67801", "lat": "37.7528", "long": "-100.0171", "short_name": "Dodge Auto", "full_name": "Dodge City Auto Dealers"},
+    {"id": 15, "city": "Garden City", "state": "KS", "address": "369 Kansas Ave", "zip": "67846", "lat": "37.9717", "long": "-100.8727", "short_name": "Garden Motors", "full_name": "Garden City Motor Group"},
+    {"id": 16, "city": "Emporia", "state": "KS", "address": "741 Commercial St", "zip": "66801", "lat": "38.4039", "long": "-96.1817", "short_name": "Emporia Auto", "full_name": "Emporia Auto Sales"},
+    {"id": 17, "city": "Leavenworth", "state": "KS", "address": "852 Delaware St", "zip": "66048", "lat": "39.3111", "long": "-94.9224", "short_name": "Leavenworth Cars", "full_name": "Leavenworth Motor Company"},
+    {"id": 18, "city": "Pittsburg", "state": "KS", "address": "963 Broadway", "zip": "66762", "lat": "37.4109", "long": "-94.7050", "short_name": "Pitt Auto", "full_name": "Pittsburg Auto Group"},
+    {"id": 19, "city": "Newton", "state": "KS", "address": "159 Main St", "zip": "67114", "lat": "38.0467", "long": "-97.3450", "short_name": "Newton Motors", "full_name": "Newton Motor Sales"},
+    {"id": 20, "city": "Great Bend", "state": "KS", "address": "753 Main St", "zip": "67530", "lat": "38.3645", "long": "-98.7648", "short_name": "Great Bend Auto", "full_name": "Great Bend Auto Dealers"}
+]
+
+@csrf_exempt
+def fetch_dealers_by_state(request, state):
+    """
+    API endpoint for fetching dealers by state
+    Expected: GET to /fetchDealers/<state>
+    Response: JSON with dealers in that state including id, city, state, address, zip, lat, long, short_name, full_name
+    """
+    if request.method == 'GET':
+        try:
+            # Filter dealers by state (case insensitive)
+            dealers_in_state = [d for d in ALL_DEALERS_50 if d['state'].upper() == state.upper()]
+            
+            return JsonResponse({
+                'state': state.upper(),
+                'dealers': dealers_in_state,
+                'total': len(dealers_in_state)
+            }, status=200)
+                
+        except Exception as e:
+            return JsonResponse({
+                'status': 'error',
+                'message': str(e)
+            }, status=400)
+    
+    return JsonResponse({
+        'status': 'error',
+        'message': 'Method not allowed. Use GET.'
+    }, status=405)
