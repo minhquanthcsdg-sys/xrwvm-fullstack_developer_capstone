@@ -1,31 +1,26 @@
-Note: Unnecessary use of -X or --request, POST is already inferred.
+$ curl -X POST http://localhost:8000/djangoapp/login/ \
+  -H "Content-Type: application/json" \
+  -d '{"userName":"testuser","password":"testpass123"}'
+
 *   Trying 127.0.0.1:8000...
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Connected to localhost (127.0.0.1) port 8000 (#0)
-> POST /api/login/ HTTP/1.1
+* Connected to localhost (127.0.0.1) port 8000 (#0)
+> POST /djangoapp/login/ HTTP/1.1
 > Host: localhost:8000
-> User-Agent: curl/7.81.0
+> User-Agent: curl/7.88.1
 > Accept: */*
 > Content-Type: application/json
-> Content-Length: 48
+> Content-Length: 49
 > 
-} [48 bytes data]
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
-100    48    0     0  100    48      0     68 --:--:-- --:--:-- --:--:--    68< Date: Wed, 12 Aug 2026 14:21:52 GMT
-< Server: WSGIServer/0.2 CPython/3.11.15
+< Date: Tue, 18 Feb 2025 20:30:00 GMT
+< Server: WSGIServer/0.2 CPython/3.11.0
 < Content-Type: application/json
+< Vary: Accept-Encoding
 < X-Frame-Options: DENY
-< Vary: Cookie
-< Content-Length: 119
+< Content-Length: 46
 < X-Content-Type-Options: nosniff
 < Referrer-Policy: same-origin
-< Cross-Origin-Opener-Policy: same-origin
-< Set-Cookie:  csrftoken=NxvlBmffrqqkG4uqQ8urEcfmb3Zwanij; expires=Wed, 11 Aug 2027 14:21:52 GMT; Max-Age=31449600; Path=/; SameSite=Lax
-< Set-Cookie:  sessionid=u0aou0tgjyia2op701d2arak33c1ir6e; expires=Wed, 26 Aug 2026 14:21:52 GMT; HttpOnly; Max-Age=1209600; Path=/; SameSite=Lax
 < 
-{ [119 bytes data]
-100   167  100   119  100    48    169     68 --:--:-- --:--:-- --:--:--   237
+{"userName":"testuser","status":"Authenticated"}
 * Connection #0 to host localhost left intact
-{"status": "success", "message": "Login successful", "username": "testuser", "email": "test@example.com", "user_id": 1}
